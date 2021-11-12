@@ -1,8 +1,8 @@
 <?php
   $urlPath = $_SERVER["DOCUMENT_ROOT"]."/";
-  $title = "eスポーツ高等学院（esports high school）は、プロから学べるeスポーツ専門の高校です。";
-  $description = "eスポーツ高等学院（esports high school）は、eスポーツ専門の高校です。FORTNITE(フォートナイト)、LEAGUE OF LEGENDS(LoLリーグオブレジェンド)、APEX LEGENDS(エイペックス)など主要なゲームタイトルをプロから学べます。学校は渋谷のど真ん中、全てがハイスペックな設備を誇るシブヤeスタジアムが校舎です。進学率も非常に高く大学進学も可能な新しい高校の選択肢です。";
-  $keywords = "eスポーツ高等学院,esports high school,シブヤeスタジアム、プロゲーマー、ストリーマー、動画実況,";
+  $title = "";
+  $description = "";
+  $keywords = ",";
   $url = "";
   $pagePath = "/";
   $ogp = "";
