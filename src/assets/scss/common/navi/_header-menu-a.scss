@@ -1,0 +1,30 @@
+@use "common/variables" as var;
+.header{
+  @include var.max767_98{
+    &-menu{
+      &-a{
+        width : 30px;
+        z-index: 100;
+        &-line{
+          width: 100%;
+          height: 1px;
+          background-color: #000;
+          display: block;
+          transition: all 0.3s ease-in-out;
+          &:nth-child(2){
+            opacity: 0;
+            margin: 6px 0;
+          }
+        }
+      }
+    }
+    &-gn{
+      &-ac .header-menu-a-line:nth-child(1){
+        transform: translateY(7px) rotate(30deg);
+      }
+      &-ac .header-menu-a-line:nth-child(3){
+        transform: translateY(-7px) rotate(-30deg);
+      }
+    }
+  }
+}

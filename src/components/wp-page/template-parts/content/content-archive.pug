@@ -1,0 +1,43 @@
+include /_data/_var.pug
+.
+  <?php
+    /**
+    * Template part for displaying archive posts
+    *
+    * @package #{themename}
+    */
+    include locate_template('/template-parts/content/content-var.php');
+  ?>
+<article id="post-<?php the_ID(); ?>" <?php post_class(''); ?>>
+a(href!="<?php the_permalink(); ?>")
+  header
+    p <?php echo $time; ?>
+    h2 <?php the_title(); ?>
+  section
+    <?php the_excerpt(); ?>
+  footer
+    <?php if($catTerms) : ?>
+      ul
+        .
+          <?php
+            foreach ( $catTerms as $catTerm ):
+            $catId = $catTerm->term_id;
+            $catName = $catTerm->name;
+            $catLink = get_term_link($catTerm->slug,$category_taxonomy);
+            echo '<li><a href="'.$catLink.'" date-catid="'.$catId.'">'.$catName.'</a></li>';
+            endforeach;
+          ?>
+    <?php endif; ?>
+    <?php if($tagTerms) : ?>
+      ul
+        .
+          <?php
+            foreach ( $tagTerms as $tagTerm ):
+              $tagId = $tagTerm->term_id;
+              $tagName = $tagTerm->name;
+              $tagLink = get_term_link($tagTerm->slug,$tag_taxonomy);
+              echo '<li><a href="'.$tagLink.'" date-tagid="'.$tagId.'">'.$tagName.'</a></li>';
+            endforeach;
+          ?>
+    <?php endif; ?>
+</article>

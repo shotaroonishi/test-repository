@@ -1,0 +1,12 @@
+//- cpt term list A #{cptTermAft}();
+.
+  <?php
+    if ( ! function_exists( '#{cptTermAft}' ) ) :
+      function #{cptTermAft}() {
+        $terms = get_terms('#{cptTermA}');
+        foreach ( $terms as $term ) {
+          echo '<li class="journal-recommend-tag-item"><a href="'.get_term_link($term).'" '.'class="journal-recommend-tag-link ft-s1212 '.esc_attr($term->slug).'">#'.$term->name.'</a></li>';
+        }
+      }
+    endif;
+  ?>

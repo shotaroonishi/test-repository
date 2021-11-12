@@ -1,0 +1,14 @@
+include /_data/_var.pug
+.
+  <?php
+    /**
+    * Template for displaying search forms in #{themename}
+    *
+    * @package #{themename}
+    */
+  ?>
+<form role="search" method="get" id="searchform" class="search-form" action="<?php home_url('/'); ?>">
+  <input type="hidden" value="<?php echo get_post_type(); ?>" name="post_type" id="post_type" />
+  <input  class="search-text" type="text" name="s" id="s" placeholder="Search" value="<?php echo $s; ?>" />
+  <input type="submit" value="Go" class="submit">
+</form>

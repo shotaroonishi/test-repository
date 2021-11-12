@@ -1,0 +1,24 @@
+mixin navi-a(className)
+  .header-wrapper
+    .header-logo-wrapper
+      a(href!="#")
+        span logo
+    .header-gn-wrapper
+      .header-gn-items
+        .header-gn-item
+          .header-gn-menuicon(class=className @click.prevent="gnMenuIconFn")
+            span(class=className+'-line')
+            span(class=className+'-line')
+            span(class=className+'-line')
+        .header-gn-item
+          nav.header-nav-wrapper
+            ul.header-nav-items
+              li.header-nav-item
+                a.header-nav-link(href!="#")
+                  span.header-nav-link-copy navi A
+              li.header-nav-item
+                a.header-nav-link(href!="#")
+                  span.header-nav-link-copy navi B
+              li.header-nav-item
+                a.header-nav-link(href!="#")
+                  span.header-nav-link-copy navi C

@@ -1,0 +1,26 @@
+//- cpt year list A #{cptYearAft}();
+.
+  <?php
+    if ( ! function_exists( '#{cptYearAft}' ) ) :
+      function #{cptYearAft}() {
+        $year=NULL;
+        $args = array(
+          'post_type' => '#{cptPostA}', // 投稿タイプの指定
+          'orderby' => 'date', // 日付順
+          'posts_per_page' => -1 // すべての投稿を表示する
+        );
+        $the_query = new WP_Query($args);
+        if ( $the_query->have_posts() ) {
+          echo '<ul class="journal-recommend-arc-items">';
+          while ($the_query->have_posts()): $the_query->the_post();
+            if ( $year != get_the_date('Y') ) {
+              $year = get_the_date('Y');
+              echo '<li class="journal-recommend-arc-item"><a class="ft-s1818" href="'.home_url( '/', 'http' ).$year.'/?post_type=#{cptPostA}">'.$year.'</a></li>';
+            }
+          endwhile;
+          echo '</ul>';
+          wp_reset_postdata();
+        }
+      }
+    endif;
+  ?>

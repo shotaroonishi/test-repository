@@ -1,0 +1,11 @@
+//- Tag list #{templateTaglist}();
+.
+  <?php
+    if ( ! function_exists( '#{templateTaglist}' ) ) :
+      function #{templateTaglist}() {
+        if ( get_the_tag_list() ) :
+            echo get_the_tag_list( '<ul class="tag-content"><li>', '</li><li>', '</li></ul>' );
+        endif;
+      }
+    endif;
+  ?>

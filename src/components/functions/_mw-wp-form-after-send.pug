@@ -1,0 +1,14 @@
+//- mw wp form アクションフックを使って完了ページへリダイレクト
+.
+  <?php
+    function my_mwform_after_send( $Data )
+    {
+        $form_key = $Data->get_form_key();
+        if ( $form_key === 'mw-wp-form-89' ) {
+            //問い合わせフォーム
+            wp_redirect('/contact-complete-detail');
+            exit;
+        }
+    }
+    add_action( 'mwform_after_send_mw-wp-form-89', 'my_mwform_after_send' );
+  ?>

@@ -1,0 +1,47 @@
+include /_data/_var.pug
+.
+  <?php
+    /**
+    * Template part for displaying posts
+    *
+    * @package #{themename}
+    */
+    $tool_comment_thum = get_field('tool_comment_thum');
+    $tool_comment_manager = get_field('tool_comment_manager');
+    $tool_comment_explanation = get_field('tool_comment_explanation');
+  ?>
+<article id="post-<?php the_ID(); ?>" <?php post_class(''); ?>>
+header
+  h1.page-single-title
+    img(src!="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/common/page-case-title.svg" alt="Metrics")
+  section.page-single-container.page-container-m
+    p.page-single-case-postTitle.page-fts20 <?php the_title(); ?>
+    <?php if(has_post_thumbnail()): ?>
+    figure.page-single-thumbnail
+      <?php the_post_thumbnail(); ?>
+    <?php endif; ?>
+    .page-single-content
+      .page-container-s
+        <?php the_content(); ?>
+        .
+          <?php 
+            if(get_field('tool_comment_manager')){
+          ?>
+        .page-single-comment
+          figure.page-single-comment-icon
+            img(src!="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/common/page-comment-title.svg" alt="Metrics")
+          .page-single-comment-wrap
+            figure.page-single-comment-fig
+              img(src!="<?php echo $tool_comment_thum; ?>" alt="Metrics")
+            .page-single-comment-copywrap
+              p.page-single-comment-manager <?php echo $tool_comment_manager; ?>
+              p.page-single-comment-copy <?php echo $tool_comment_explanation; ?>
+        .
+          <?php
+            }
+          ?>
+        p.page-flex-c.page-mgt70 この分析ツールをご利用希望の方は、お問い合わせください。
+        .page-btn-wrap.page-flex-c.page-mgt30
+          a(href="/").page-gr-a.page-btn-a お問い合わせ
+            span
+</article>

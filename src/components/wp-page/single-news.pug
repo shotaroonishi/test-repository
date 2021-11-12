@@ -1,0 +1,18 @@
+include /_data/_var.pug
+.
+  <?php
+    /**
+    * The template for displaying all single posts
+    *
+    * @package #{themename}
+    */
+  ?>
+.
+  <?php
+    if ( is_singular( 'news' ) ) {
+      //カスタム投稿名Aの一覧ページへ
+      header('Location:' . get_bloginfo('url') . '/news/' ); exit() ;
+    }
+  ?>
+</html>
+

@@ -1,0 +1,19 @@
+include /_data/_var.pug
+.
+  <?php
+    /**
+    * Template part for displaying posts
+    *
+    * @package #{themename}
+    */
+  ?>
+<article id="post-<?php the_ID(); ?>" <?php post_class(''); ?>>
+header
+  p <?php the_time( get_option( 'date_format' ) ); ?>
+  h2 <?php the_title(); ?>
+main
+  .
+    <?php
+      the_excerpt();
+    ?>
+</article>

@@ -1,0 +1,46 @@
+@use "variables/breakpoint" as breakpoint;
+// @use "sass:math";
+$col_padding: (
+  //padding min992 max991 max767
+  p20-10-0:(20px,10px,0px),
+  p40-20-0:(40px,20px,0px),
+);
+.cp{
+  @each $class,$padding in $col_padding {
+    $pdpc: nth($padding, 1);
+    &-#{$class}{
+      margin-left: -$pdpc;
+      margin-right: -$pdpc;
+      & > *{
+        padding-left: $pdpc;
+        padding-right: $pdpc;
+      }
+    }
+  }
+  @include breakpoint.max991{
+    @each $class,$padding in $col_padding {
+      $pdsp: nth($padding, 2);
+      &-#{$class}{
+        margin-left: -$pdsp;
+        margin-right: -$pdsp;
+        & > *{
+          padding-left: $pdsp;
+          padding-right: $pdsp;
+        }
+      }
+    }
+  }//max-width:991
+  @include breakpoint.max767_98{
+    @each $class,$padding in $col_padding {
+      $pdsp: nth($padding, 3);
+      &-#{$class}{
+        margin-left: -$pdsp;
+        margin-right: -$pdsp;
+        & > *{
+          padding-left: $pdsp;
+          padding-right: $pdsp;
+        }
+      }
+    }
+  }//max-width:767;
+}

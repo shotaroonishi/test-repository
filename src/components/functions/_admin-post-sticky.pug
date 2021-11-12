@@ -1,0 +1,12 @@
+//- 「投稿の編集」で表示される「ブログのトップに固定」を非表示
+.
+  <?php
+    function admin_style() {
+      echo '
+        <style type="text/css">
+          .edit-post-post-status .components-panel__row:nth-of-type(4) {display:none !important;}
+        </style>
+      '.PHP_EOL;
+    }
+    add_action('admin_print_styles', 'admin_style');
+  ?>

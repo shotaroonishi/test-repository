@@ -1,0 +1,161 @@
+//- print_r( $request );
+//- $args['tax_query'] = $tax_query;
+//- echo "\n";
+//- print_r( $total_posts );
+//- echo "\n";
+//- print_r( $max_pages );
+//- echo "\n";
+.
+  <?php
+    function custom_rest_api_init($wp_rest_server) {
+      register_rest_route('api/v2', '/customs', array(
+          'methods' => WP_REST_SERVER::READABLE,
+          'permission_callback' => '__return_true',
+          'callback' => 'rest_custom_posts',
+      ));
+    }
+    add_action('rest_api_init', 'custom_rest_api_init');
+
+    function rest_custom_posts($request) {
+      // per_page
+      if(isset($_GET['per_page'])) {
+        $posts_page = $_GET['per_page'];
+      } else {
+        $posts_page = 10;
+      }
+      // s
+      if(isset($_GET['s'])) {
+        $keyword = $_GET['s'];
+      }else {
+        $keyword = '';
+      }
+      // category tag
+      $tax_query = array('relation' => 'AND');
+      if(isset($_GET['cat'])) {
+        $catTermsId = $_GET['cat'];
+        $getTerm = get_term( $catTermsId );
+        $catTaxonomy = $getTerm->taxonomy;
+        $tax_query[] = array(
+          'taxonomy' => $catTaxonomy,
+          'field' => 'term_id',
+          'terms' => $catTermsId
+        );
+      }
+      if(isset($_GET['tag_id'])) {
+        $tagTermsId = $_GET['tag_id'];
+        $getTerm = get_term( $tagTermsId );
+        $tagTaxonomy = $getTerm->taxonomy;
+        $tax_query[] = array(
+          'taxonomy' => $tagTaxonomy,
+          'field' => 'term_id',
+          'terms' => explode(",", $tagTermsId),
+          'operator' => 'AND'
+        );
+      }
+      $paged = $request->get_param( 'page' );
+      $paged = ( isset( $paged ) || ! ( empty( $paged ) ) ) ? $paged : 1;
+
+      $allargs = array(
+        'public'   => true,
+        '_builtin' => false
+      );
+
+      $output = 'names';
+      $operator = 'AND';
+
+      $cus_post_types = get_post_types( $allargs, $output, $operator );
+      $filt_cut_post_types = array();
+      foreach ( $cus_post_types  as $cus_post_type ) {
+        $filt_cut_post_types[] = $cus_post_type;
+      }
+      $all_post_types = array_merge($filt_cut_post_types);
+
+      $args = array(
+        //- 'post_type' => $all_post_types,
+        'post_type' => 'metrics',
+        'post_status' => 'publish',
+        'ignore_sticky_posts' => 1,
+        'paged' => $paged,
+        'posts_per_page' => $posts_page,
+        'orderby' => array(
+          'menu_order'=>'ASC',
+          'date' =>'DESC',
+        ),
+        's' => $keyword,
+        'tax_query' => $tax_query,
+      );
+      $wp_query = new WP_Query($args);
+      $total_posts = $wp_query->found_posts;
+      $max_pages = $wp_query->max_num_pages;
+      if ( $wp_query->have_posts() ) {
+        while($wp_query->have_posts()) {
+          $wp_query->the_post();
+          $postId = get_the_ID();
+          $postType = get_post_type();
+          $postTitle = mb_substr(get_the_title(), 0, 30);
+          $postLink = get_permalink();
+          $postContent = get_the_content();
+          $postExcerpt = mb_substr(get_the_excerpt(), 0, 88);
+          if(has_post_thumbnail()) {
+              $postThumbnail = get_the_post_thumbnail_url();
+          } else {
+              $postThumbnail = '';
+          }
+          $taxonomy_names = get_object_taxonomies($postType);
+          if($postType === 'post'){
+            $category_taxonomy = $taxonomy_names[0];
+            $catTerms = get_the_terms( $postId, $category_taxonomy );
+            $tag_taxonomy = $taxonomy_names[1];
+            $tagTerms = get_the_terms( $postId, $tag_taxonomy );
+            $urlType = 'posts';
+          }else{
+            $category_taxonomy = $taxonomy_names[0];
+            $catTerms = get_the_terms( $postId, $category_taxonomy );
+            $tag_taxonomy = $taxonomy_names[1];
+            $tagTerms = get_the_terms( $postId, $tag_taxonomy );
+            $urlType = $postType;
+          }
+          $catData = array();
+          if ( $catTerms && ! is_wp_error( $catTerms ) ) {
+            foreach ( $catTerms as $catTerm ) {
+              $current = array();
+              $current['catid'] = $catTerm->term_id;
+              $current['slug'] = $catTerm->slug;
+              $current['name'] = $catTerm->name;
+              $current['url'] = get_term_link($catTerm->slug,$category_taxonomy);
+              array_push($catData, $current);
+            }
+          }
+          $tagData = array();
+          if ( $tagTerms && ! is_wp_error( $tagTerms ) ) {
+            foreach ( $tagTerms as $tagTerm ) {
+              $current = array();
+              $current['tagid'] = $tagTerm->term_id;
+              $current['slug'] = $tagTerm->slug;
+              $current['name'] = $tagTerm->name;
+              $current['url'] = get_term_link($tagTerm->slug,$tag_taxonomy);
+              array_push($tagData, $current);
+            }
+          }
+          $post_data[] = [
+            'postType' => $postType,
+            'id' => $postId,
+            'title' => $postTitle,
+            'time' => get_the_time('Y.m.d'),
+            'link' => $postLink,
+            //- 'content' => $postContent,
+            'excerpt' => $postExcerpt,
+            'thumbnail' => $postThumbnail,
+            'cats' => $catData,
+            'tags' => $tagData,
+          ];
+        }
+        wp_reset_postdata();
+      }
+      $response = new WP_REST_Response($post_data);
+      $response->header( 'X-WP-Total', $total_posts );
+      $response->header( 'X-WP-TotalPages', $max_pages );
+      $response->set_status(200);
+      return $response;
+    }
+  ?>

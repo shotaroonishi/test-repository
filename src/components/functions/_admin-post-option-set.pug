@@ -1,0 +1,15 @@
+//- パネル設定非表示、acv編集非表示
+.
+  <?php
+    function admin_style_opstion_set() {
+      if (!current_user_can('administrator')) {
+        echo '
+          <style type="text/css">
+            .components-dropdown-menu__menu .components-menu-group:nth-last-of-type(1) {display:none !important;}
+            .postbox-header .acf-js-tooltip{display:none !important;}
+          </style>
+        '.PHP_EOL;
+      }
+    }
+    add_action('admin_print_styles', 'admin_style_opstion_set');
+  ?>

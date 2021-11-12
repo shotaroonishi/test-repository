@@ -1,0 +1,297 @@
+@use "common/variables/breakpoint" as breakpoint;
+@use "sass:math";
+$elements: (t,b,l,r);
+$elNums: (
+  //1.xxl: 1320
+  //2.xl:1200
+  //3.l:992
+  //4.md:768
+  //5.sp: 767
+  200:(200,180,160,160,160),
+  175:(175,155,155,160,160),
+  150:(150,120,110,100,75),
+  100:(100,80,70,60,50),
+  70:(70,60,50,40,30),
+  60:(60,50,40,50,40),
+  40:(40,40,30,30,20),
+  30:(30,30,20,20,20),
+);
+$minusElNums: (
+  //1.xxl: 1320
+  //2.xl:1200
+  //3.l:992
+  //4.md:768
+  //5.sp: 767
+  30:(30,30,20,20,20),
+);
+.mg{
+@each $element in $elements {
+  @each $class,$elNum in $elNums {
+    @include breakpoint.min1320{
+      $num: nth($elNum, 1);
+      &-#{$element}#{$class}{
+        @if $element == t {
+          margin-top: #{$num}px;
+        }
+        @if $element == b {
+          margin-bottom: #{$num}px;
+        }
+        @if $element == l {
+          margin-left: #{$num}px;
+        }
+        @if $element == r {
+          margin-right: #{$num}px;
+        }
+      }
+    }// includ
+    @include breakpoint.min1200{
+      $num: nth($elNum, 2);
+      &-#{$element}#{$class}{
+        @if $element == t {
+          margin-top: #{$num}px;
+        }
+        @if $element == b {
+          margin-bottom: #{$num}px;
+        }
+        @if $element == l {
+          margin-left: #{$num}px;
+        }
+        @if $element == r {
+          margin-right: #{$num}px;
+        }
+      }
+    }// includ
+    @include breakpoint.min992{
+      $num: nth($elNum, 3);
+      &-#{$element}#{$class}{
+        @if $element == t {
+          margin-top: #{$num}px;
+        }
+        @if $element == b {
+          margin-bottom: #{$num}px;
+        }
+        @if $element == l {
+          margin-left: #{$num}px;
+        }
+        @if $element == r {
+          margin-right: #{$num}px;
+        }
+      }
+    }// includ
+    @include breakpoint.min768{
+      $num: nth($elNum, 4);
+      &-#{$element}#{$class}{
+        @if $element == t {
+          margin-top: #{$num}px;
+        }
+        @if $element == b {
+          margin-bottom: #{$num}px;
+        }
+        @if $element == l {
+          margin-left: #{$num}px;
+        }
+        @if $element == r {
+          margin-right: #{$num}px;
+        }
+      }
+    }// includ
+    @include breakpoint.max767_98{
+      $num: nth($elNum, 5);
+      &-#{$element}#{$class}{
+        @if $element == t {
+          margin-top: #{$num}px;
+        }
+        @if $element == b {
+          margin-bottom: #{$num}px;
+        }
+        @if $element == l {
+          margin-left: #{$num}px;
+        }
+        @if $element == r {
+          margin-right: #{$num}px;
+        }
+      }
+    }// includ
+  }
+  @each $class,$elNum in $minusElNums {
+    @include breakpoint.min1320{
+      $num: nth($elNum, 1);
+      &-#{$element}-#{$class}{
+        @if $element == t {
+          margin-top: -#{$num}px;
+        }
+        @if $element == b {
+          margin-bottom: -#{$num}px;
+        }
+        @if $element == l {
+          margin-left: -#{$num}px;
+        }
+        @if $element == r {
+          margin-right: -#{$num}px;
+        }
+      }
+    }// includ
+    @include breakpoint.min1200{
+      $num: nth($elNum, 2);
+      &-#{$element}-#{$class}{
+        @if $element == t {
+          margin-top: -#{$num}px;
+        }
+        @if $element == b {
+          margin-bottom: -#{$num}px;
+        }
+        @if $element == l {
+          margin-left: -#{$num}px;
+        }
+        @if $element == r {
+          margin-right: -#{$num}px;
+        }
+      }
+    }// includ
+    @include breakpoint.min992{
+      $num: nth($elNum, 3);
+      &-#{$element}-#{$class}{
+        @if $element == t {
+          margin-top: -#{$num}px;
+        }
+        @if $element == b {
+          margin-bottom: -#{$num}px;
+        }
+        @if $element == l {
+          margin-left: -#{$num}px;
+        }
+        @if $element == r {
+          margin-right: -#{$num}px;
+        }
+      }
+    }// includ
+    @include breakpoint.min768{
+      $num: nth($elNum, 4);
+      &-#{$element}-#{$class}{
+        @if $element == t {
+          margin-top: -#{$num}px;
+        }
+        @if $element == b {
+          margin-bottom: -#{$num}px;
+        }
+        @if $element == l {
+          margin-left: -#{$num}px;
+        }
+        @if $element == r {
+          margin-right: -#{$num}px;
+        }
+      }
+    }// includ
+    @include breakpoint.max767_98{
+      $num: nth($elNum, 5);
+      &-#{$element}-#{$class}{
+        @if $element == t {
+          margin-top: -#{$num}px;
+        }
+        @if $element == b {
+          margin-bottom: -#{$num}px;
+        }
+        @if $element == l {
+          margin-left: -#{$num}px;
+        }
+        @if $element == r {
+          margin-right: -#{$num}px;
+        }
+      }
+    }// includ
+  }
+}
+}
+
+.pd{
+  @each $element in $elements {
+    @each $class,$elNum in $elNums {
+      @include breakpoint.min1320{
+        $num: nth($elNum, 1);
+        &-#{$element}#{$class}{
+          @if $element == t {
+            padding-top: #{$num}px;
+          }
+          @if $element == b {
+            padding-bottom: #{$num}px;
+          }
+          @if $element == l {
+            padding-left: #{$num}px;
+          }
+          @if $element == r {
+            padding-right: #{$num}px;
+          }
+        }
+      }// includ
+      @include breakpoint.min1200{
+        $num: nth($elNum, 2);
+        &-#{$element}#{$class}{
+          @if $element == t {
+            padding-top: #{$num}px;
+          }
+          @if $element == b {
+            padding-bottom: #{$num}px;
+          }
+          @if $element == l {
+            padding-left: #{$num}px;
+          }
+          @if $element == r {
+            padding-right: #{$num}px;
+          }
+        }
+      }// includ
+      @include breakpoint.min992{
+        $num: nth($elNum, 3);
+        &-#{$element}#{$class}{
+          @if $element == t {
+            padding-top: #{$num}px;
+          }
+          @if $element == b {
+            padding-bottom: #{$num}px;
+          }
+          @if $element == l {
+            padding-left: #{$num}px;
+          }
+          @if $element == r {
+            padding-right: #{$num}px;
+          }
+        }
+      }// includ
+      @include breakpoint.min768{
+        $num: nth($elNum, 4);
+        &-#{$element}#{$class}{
+          @if $element == t {
+            padding-top: #{$num}px;
+          }
+          @if $element == b {
+            padding-bottom: #{$num}px;
+          }
+          @if $element == l {
+            padding-left: #{$num}px;
+          }
+          @if $element == r {
+            padding-right: #{$num}px;
+          }
+        }
+      }// includ
+      @include breakpoint.max767_98{
+        $num: nth($elNum, 5);
+        &-#{$element}#{$class}{
+          @if $element == t {
+            padding-top: #{$num}px;
+          }
+          @if $element == b {
+            padding-bottom: #{$num}px;
+          }
+          @if $element == l {
+            padding-left: #{$num}px;
+          }
+          @if $element == r {
+            padding-right: #{$num}px;
+          }
+        }
+      }// includ
+    }
+  }
+}
+

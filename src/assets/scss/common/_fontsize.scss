@@ -1,0 +1,76 @@
+@use "variables/breakpoint" as breakpoint;
+@use "sass:math";
+$fontsizes: (
+  //font 1200 font size , 992 font size , 768 font size , line height , letter spacing , 375 font size , 320 font size , line height , letter spacing
+  //1.xxl: 1320
+  //2.xl:1200
+  //3.l:992
+  //4.md:768
+  //5.line height (xd line height / 1)
+  //6.letter spacing
+  //7.sp: max 767
+  //8.xs: max 374
+  //9.line height (xd line height / 7)
+  //10.letter spacing
+
+  s12040:(120,96,72,58,math.div(192, 120),120,40,30,math.div(64, 40),120),
+);
+.ft{
+  @each $class,$fontsize in $fontsizes {
+    @include breakpoint.min1320{
+      $fontnum: nth($fontsize, 1);
+      $lineheight: nth($fontsize, 5);
+      $letterspacing: nth($fontsize, 6);
+      $letterspacingEm: math.div($letterspacing, 1000);
+      &-#{$class}{
+        font-size: #{$fontnum}px;
+        line-height: #{$lineheight};
+        letter-spacing: #{$letterspacingEm}em;
+      }
+    }
+    @include breakpoint.min1200{
+      $fontnum: nth($fontsize, 2);
+      $lineheight: nth($fontsize, 5);
+      $letterspacing: nth($fontsize, 6);
+      $letterspacingEm: math.div($letterspacing, 1000);
+      &-#{$class}{
+        font-size: #{$fontnum}px;
+        line-height: #{$lineheight};
+        letter-spacing: #{$letterspacingEm}em;
+      }
+    }
+    @include breakpoint.min992{
+      $fontnum: nth($fontsize, 3);
+      $lineheight: nth($fontsize, 5);
+      $letterspacing: nth($fontsize, 6);
+      $letterspacingEm: math.div($letterspacing, 1000);
+      &-#{$class}{
+        font-size: #{$fontnum}px;
+        line-height: #{$lineheight};
+        letter-spacing: #{$letterspacingEm}em;
+      }
+    }
+    @include breakpoint.min768{
+      $fontnum: nth($fontsize, 4);
+      $lineheight: nth($fontsize, 5);
+      $letterspacing: nth($fontsize, 6);
+      $letterspacingEm: math.div($letterspacing, 1000);
+      &-#{$class}{
+        font-size: #{$fontnum}px;
+        line-height: #{$lineheight};
+        letter-spacing: #{$letterspacingEm}em;
+      }
+    }
+    @include breakpoint.max767_98{
+      $fontnum: nth($fontsize, 7);
+      $lineheight: nth($fontsize, 9);
+      $letterspacing: nth($fontsize, 10);
+      $letterspacingEm: math.div($letterspacing, 1000);
+      &-#{$class}{
+        font-size: #{$fontnum}px;
+        line-height: #{$lineheight};
+        letter-spacing: #{$letterspacingEm}em;
+      }
+    }
+  }
+}

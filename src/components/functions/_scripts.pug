@@ -1,0 +1,24 @@
+//- jsvascript scripts
+//- wp_enqueue_script( 'bootstrap', get_template_directory_uri().'/assets/js/lib/bootstrap.min.js', array(), false, true );
+//- wp_enqueue_script( 'jquerymatchHeight', get_template_directory_uri().'/assets/js/lib/jquery.matchHeight.js', array(), false, true );
+//- wp_enqueue_script( 'ofi', get_template_directory_uri().'/assets/js/lib/ofi.min.js', array(), false, true );
+//- wp_enqueue_script( 'splide', get_template_directory_uri().'/assets/js/lib/splide.min.js', array(), false, true );
+//- wp_enqueue_script( 'vegas', get_template_directory_uri().'/assets/js/lib/vegas.min.js', array(), false, true );
+.
+  <?php
+    function scripts() {
+      wp_enqueue_script( 'jquery' );
+      wp_enqueue_script( 'vue', get_template_directory_uri().'/assets/js/lib/vue.2.6.12.js', array(), false, true );
+      wp_enqueue_script( 'vue-select', get_template_directory_uri().'/assets/js/lib/vue-select.3.13.js', array(), false, true );
+      wp_enqueue_script( 'axios', get_template_directory_uri().'/assets/js/lib/axios.0.21.1.js', array(), false, true );
+      wp_enqueue_script( 'commons', get_template_directory_uri().'/assets/js/common.min.js', array(), false, true );
+      if(is_home()){
+        wp_enqueue_script( 'splide', get_template_directory_uri().'/assets/js/lib/splide.min.js', array(), false, true );
+        wp_enqueue_script( 'home', get_template_directory_uri().'/assets/js/home.min.js', array(), false, true );
+      }
+      if(!is_home()){
+        wp_enqueue_script( 'pageLoading', get_template_directory_uri().'/assets/js/page-loading.min.js', array(), false, true );
+      }
+    }
+    add_action( 'wp_footer', 'scripts' );
+  ?>

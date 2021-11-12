@@ -1,0 +1,26 @@
+@use "common/variables/breakpoint" as breakpoint;
+@use "sass:math";
+$row_padding: (
+  //padding pc sp content
+  p0-25:(0,25px),
+);
+.rp{
+  @include breakpoint.min768max1199{
+    @each $class,$padding in $row_padding {
+      $pdpc: nth($padding, 1);
+      &-#{$class}{
+        padding-left: $pdpc;
+        padding-right: $pdpc;
+      }
+    }
+  }//min768max1199
+  @include breakpoint.max767_98{
+    @each $class,$padding in $row_padding {
+      $pdsp: nth($padding, 2);
+      &-#{$class}{
+        padding-left: $pdsp;
+        padding-right: $pdsp;
+      }
+    }
+  }//max-width:767;
+}

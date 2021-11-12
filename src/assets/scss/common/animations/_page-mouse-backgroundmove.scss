@@ -1,0 +1,20 @@
+@mixin mouse-backgroundmove{
+  &-backgroundmove{
+    &-items{
+      position: relative;
+    }
+    &-fig{
+      display: flex;
+      justify-content: center;
+      & > img{
+        transform: scaleX(1.2);
+      }
+    }
+    &-fig2{
+      width: 500px;
+      position: absolute;
+      bottom: 0;
+      pointer-events: none;
+    }
+  }
+}

@@ -1,0 +1,235 @@
+.fnc {
+  // main variables, basically everything depends on $slidingAT
+  $slidingAT: .3s;
+  $slidingDelay: $slidingAT / 500 * 2;
+  $headingAT: $slidingAT * 3;
+  $controlAT: $slidingAT/2;
+  $easing: ease-in-out;
+  $blendMode: luminosity;
+
+  $contentLeft: 40%;
+  $contentTop: 40%;
+  
+  $headingPadding: 30px;
+  $headingFontSize: 100px;
+  
+  $black: #1F2833;
+  
+  // $bgColors: (
+  //   dark: lighten(#242424, 20%),
+  //   green: #42605E,
+  //   red: lighten(#6A0A0D, 10%),
+  //   blue: #2D7791
+  // );
+  &-slider {
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+    height: 100vh;
+
+    *, *:before, *:after {
+      box-sizing: border-box;
+    }
+
+    &-wrap {
+      position: relative;
+      height: 100%;
+      // transition: transform 3S .5S;
+    }
+  }
+
+  &-slide {
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transform: translate3d(0,0,0);
+
+    &.m--before-sliding {
+      z-index: 3 !important;
+      transform: translate3d(-100%,0,0);//画像 切替 逆に right->left
+    }
+    
+    &.m--active-old{
+      z-index: 2;
+    }
+    &.m--active-slide {
+      z-index: 3;
+      transition: transform $slidingAT $slidingDelay $easing;//画面転換speed 一緒に変更
+      transform: translate3d(0,0,0);
+      opacity: 1;
+    }
+
+    &-inner {
+      position: relative;
+      height: 100%;
+      background-size: cover;
+      background-position: center top;
+      transform: translate3d(0,0,0);
+
+      .m--global-blending-active &,
+      .m--blend-bg-active & {
+        background-blend-mode: $blendMode;
+      }
+
+      .m--before-sliding & {
+        transform: translate3d(100%,0,0);//画像 切替 逆に right->left
+      }
+
+      .m--active-slide & {
+        transition: transform $slidingAT $slidingDelay $easing;//画面転換speed 一緒に変更
+        transform: translate3d(0,0,0);
+      }
+    }
+
+    &-content {
+      z-index: 2;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }
+
+  &-nav {
+    z-index: 5;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    &-bgs {
+      z-index: -1;
+      overflow: hidden;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    &-bg {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+
+      &.m--nav-bg-before {
+        z-index: 2 !important;
+        transform: translateX(100%);
+      }
+
+      &.m--active-nav-bg {
+        z-index: 1;
+        transition: transform .1s .1s;
+        transform: translateX(0);
+      }
+    }
+    
+    &-controls {
+      font-size: 0;
+    }
+
+    &-control {
+      $controlWidth: 100px;
+
+      overflow: hidden;
+      position: relative;
+      display: inline-block;
+      vertical-align: top;
+      width: $controlWidth;
+      height: 50px;
+      font-size: 14px;
+      color: #fff;
+      text-transform: uppercase;
+      background: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      transition: background-color $controlAT;
+
+      &.m--active-control {
+        background: $black;
+      }
+
+      &-progress {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 2px;
+        background: #fff;
+        transform-origin: 0 50%;
+        transform: scaleX(0);
+        transition-timing-function: linear !important;
+
+        .m--with-autosliding .m--active-control & {
+          transform: scaleX(1);
+        }
+
+        .m--prev-control & {
+          transform: translateX(100%);
+          transition: transform 0.5s !important;
+        }
+
+        .m--reset-progress & {
+          transform: scaleX(0);
+          transition: transform 0s 0s !important;
+        }
+
+        .m--autosliding-blocked & {
+          transition: all 0s 0s !important;
+          transform: scaleX(0) !important;
+        }
+      }
+    }
+  }
+
+}
+
+
+/* NOT PART OF COMMON SLIDER STYLES */
+// $font: 'Open Sans', Helvetica, Arial, sans-serif;
+// $creditsAT: 0.7s;
+// $creditsWidth: 400px;
+
+.example-slider {
+
+  .fnc-slide {
+    & .fnc-slide-images{
+      width: 105vw;
+      height: 100%;
+      background-size: cover;
+      background-position: center top;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    &.m--active-slide .fnc-slide-images{
+      // left: 240px;
+      // animation-duration: 30s;
+      // animation-name: slide_move;
+    }
+    &-1 {
+      .fnc-slide-images{
+        background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/blackwidow.jpg');
+      }
+    }
+    &-2 {
+      .fnc-slide-images{
+        background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/captainamerica.jpg');
+      }
+    }
+    &-3 {
+      .fnc-slide-images{
+        background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/ironman-alt.jpg');
+      }
+    }
+    &-4 {
+      .fnc-slide-images{
+        background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/thor.jpg');
+      }
+    }
+  }
+}

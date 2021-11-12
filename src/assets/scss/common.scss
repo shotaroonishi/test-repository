@@ -1,0 +1,18 @@
+@charset "utf-8";
+/***** reset *****/
+// @use "common/variables/breakpoint";
+@use "common/reset";
+@use "common/loading/page-loading";
+@use "common/header";
+@use "common/navi/header-menu-a";
+// @use "common/fontsize";
+@use "common/animations/page-scrolltrigger" as scrolltrigger;
+@use "common/animations/page-mouse-backgroundmove" as mouse-backgroundmove;
+@use "common/animations/page-cursor" as page-cursor;
+@use "common/page-common" as page-common;
+.page {
+  @include scrolltrigger.scrolltrigger;
+  @include mouse-backgroundmove.mouse-backgroundmove;
+  @include page-cursor.cursor;
+  @include page-common.page-common;
+}

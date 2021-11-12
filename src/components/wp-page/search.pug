@@ -1,0 +1,55 @@
+include /_data/_var.pug
+.
+  <?php
+    /**
+    * The template for displaying search results pages
+    *
+    * @package #{themename}
+    */
+    get_header();
+  ?>
+<body <?php body_class(); ?>>
+.page-wrap
+  .
+    <?php
+      get_template_part(#{get_template_header});
+    ?>
+  main
+    .search-wrap
+      header.search-header
+          .
+            <?php
+              if ( have_posts() ) :
+            ?>
+            h1.search-title <?php printf( __( 'Search Results for: %s', '#{langFileName}' ), '<span>' . get_search_query() . '</span>' ); ?>
+          .
+            <?php
+              else :
+            ?>
+            h1.search-title <?php _e( 'Nothing Found', '#{langFileName}' ); ?>
+          .
+            <?php
+              endif;
+            ?>
+    .search-content
+      .
+        <?php
+          if ( have_posts() ) :
+            while ( have_posts() ) :
+              the_post();
+              //- get_template_part( 'template-parts/content/content-post' );
+            endwhile;
+          else :
+        ?>
+          <p><?php _e( 'Sorry, but nothing matched your search terms. Please try again with some different keywords.', '#{langFileName}' ); ?></p>
+        <?php
+          //- get_search_form();
+          endif;
+        ?>
+  .
+    <?php
+      get_footer();
+    ?>
+</body>
+</html>
+

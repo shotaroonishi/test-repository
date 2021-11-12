@@ -1,0 +1,98 @@
+//- term, taxonomy 削除
+//- https://rudrastyh.com/wordpress/remove-taxonomy-slug-from-urls.html
+//- domain/term
+//- print_r( $query_vars );
+.
+  <?php
+    function rudr_change_term_request($query_vars){
+      $allargs = array(
+        'public'   => true,
+        '_builtin' => false,
+        //- 'hierarchical' => true
+      );
+      $output = 'names';
+      $operator = 'and';
+      $get_taxonomies = get_taxonomies( $allargs, $output, $operator );
+      $category_base = array('category');
+      $filt_taxonomies = array();
+      if ( $get_taxonomies ) {
+          foreach ( $get_taxonomies  as $get_taxonomy ) {
+              $filt_taxonomies[] = $get_taxonomy;
+          }
+      }
+      $all_taxonomies = array_merge($filt_taxonomies); // ,$category_base
+
+      $tax_names = $all_taxonomies;
+      if( isset($query_vars['attachment']) ? $query_vars['attachment'] : null) :
+        $include_children = true;
+        $name = $query_vars['attachment'];
+      else:
+
+        if( isset($query_vars['name']) ? $query_vars['name'] : null) {
+          $include_children = false;
+          $name = $query_vars['name'];
+        }
+      endif;
+      if (isset($name)):
+        foreach ($tax_names as $tax_name) {
+          $term = get_term_by('slug', $name, $tax_name);
+          if ($term && !is_wp_error($term)):
+          if( $include_children ) {
+            unset($query_vars['attachment']);
+            $parent = $term->parent;
+            while( $parent ) {
+              $parent_term = get_term( $parent, $tax_name);
+              $name = $parent_term->slug . '/' . $name;
+              $parent = $parent_term->parent;
+            }
+          } else {
+
+            unset($query_vars['name']);
+          }
+          $query_vars[$tax_name] = $name;
+
+          endif;
+
+        }
+
+      endif;
+      
+      return $query_vars;
+
+    }
+
+    add_filter('request', 'rudr_change_term_request', 1, 1 );
+
+    function rudr_term_permalink( $url, $term, $taxonomy ){
+      $allargs = array(
+        'public'   => true,
+        '_builtin' => false,
+        //- 'hierarchical' => true
+      );
+      $output = 'names';
+      $operator = 'and';
+      $get_taxonomies = get_taxonomies( $allargs, $output, $operator );
+      $category_base = array('category');
+      $filt_taxonomies = array();
+      if ( $get_taxonomies ) {
+          foreach ( $get_taxonomies  as $get_taxonomy ) {
+              $filt_taxonomies[] = $get_taxonomy;
+          }
+      }
+      $all_taxonomies = array_merge($filt_taxonomies); // ,$category_base
+      $taxonomy_slugs = $all_taxonomies;
+
+      foreach ($taxonomy_slugs as $taxonomy_slug) {
+
+        if ( stripos($url, $taxonomy_slug) === TRUE || $taxonomy == $taxonomy_slug ) {
+
+          $url = str_replace('/' . $taxonomy_slug, '', $url);
+        }
+      }
+
+      return $url;
+    }
+
+    add_filter( 'term_link', 'rudr_term_permalink', 10, 3 );
+
+  ?>

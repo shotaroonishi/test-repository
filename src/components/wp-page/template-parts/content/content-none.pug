@@ -1,0 +1,43 @@
+include /_data/_var.pug
+.
+  <?php
+    /**
+    * Template part for displaying a message that posts cannot be found
+    *
+    * @package #{themename}
+    */
+  ?>
+section.no-results.not-found
+  header.page-header
+    h1
+      .
+        <?php
+          _e( 'Nothing Found', '#{langFileName}' );
+        ?>
+  .page-content
+    .
+      <?php
+        if ( is_home() && current_user_can( 'publish_posts' ) ) :
+      ?>
+    p
+      .
+        <?php
+          printf( __( 'Ready to publish your first post? <a href="%1$s">Get started here</a>.', '#{langFileName}' ), esc_url( admin_url( 'post-new.php' ) ) );
+        ?>
+    .
+      <?php
+        else :
+      ?>
+    p
+      .
+        <?php
+          _e( 'It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help.', '#{langFileName}' );
+        ?>
+      .
+        <?php
+          get_search_form();
+        ?>
+    .
+      <?php
+        endif;
+      ?>

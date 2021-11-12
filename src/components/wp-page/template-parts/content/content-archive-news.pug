@@ -1,0 +1,20 @@
+include /_data/_var.pug
+.
+  <?php
+    /**
+    * Template part for displaying archive posts
+    *
+    * @package #{themename}
+    */
+     $news_link = get_field('news_link');
+  ?>
+<article id="post-<?php the_ID(); ?>" <?php post_class(''); ?>>
+li.page-news-item
+  <?= $news_link ? '<a href="'.$news_link.'" class="page-news-link" rel="nofollow" target="_blank">' : '<div class="page-news-link">'; ?>
+    dl.page-news-group
+      div.page-news-group-wrap
+        dt.page-news-group-date <?php the_time('Y.m.d');?>
+        dd.page-news-group-title <?php the_title();?>
+    <?= $news_link ? '<i class="page-arrow-r"></i>' : ''; ?>
+  <?= $news_link ? '</a>' : '</div>'; ?>
+</article>

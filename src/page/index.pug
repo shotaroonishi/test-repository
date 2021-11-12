@@ -1,0 +1,57 @@
+include /data/var.pug
+include /components/content/content-group-1.pug
+include /components/content/animations/content-cursor.pug
+include /components/content/animations/content-mouse-backgroundmove.pug
+include /components/content/animations/content-scrolltrigger.pug
+.
+  <?php
+    $urlPath = $_SERVER["DOCUMENT_ROOT"]."/";
+    $title = "eスポーツ高等学院（esports high school）は、プロから学べるeスポーツ専門の高校です。";
+    $description = "eスポーツ高等学院（esports high school）は、eスポーツ専門の高校です。FORTNITE(フォートナイト)、LEAGUE OF LEGENDS(LoLリーグオブレジェンド)、APEX LEGENDS(エイペックス)など主要なゲームタイトルをプロから学べます。学校は渋谷のど真ん中、全てがハイスペックな設備を誇るシブヤeスタジアムが校舎です。進学率も非常に高く大学進学も可能な新しい高校の選択肢です。";
+    $keywords = "eスポーツ高等学院,esports high school,シブヤeスタジアム、プロゲーマー、ストリーマー、動画実況,";
+    $url = "";
+    $pagePath = "/";
+    $ogp = "";
+    $siteName = "";
+  ?>
+doctype html
+html(lang="ja")
+  head
+    .
+      <?php
+        include($urlPath."inc/head/page-meta.php");
+        include($urlPath."inc/head/com-css.php");
+      ?>
+    //- link(rel="stylesheet" href= urlPath + "assets/css/page/home.min.css")
+  body
+    #app
+      .
+        <?php
+          include($_SERVER['DOCUMENT_ROOT']."/inc/page-loading.php");
+        ?>
+      .page-wrap
+        header(role="header").header
+          .
+            <?php
+              include($_SERVER['DOCUMENT_ROOT']."/inc/header/header-navi.php");
+            ?>
+        main(role="main")
+          +content-mouse-backgroundmove()
+          p.mheight content !{h1_copy_1}
+          +content-group-1()
+          <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+          +content-scrolltrigger()
+          <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        footer(role="footer").footer
+          //- .
+          //-   <?php
+          //-     include($urlPath."inc/footer/footer.php");
+          //-   ?>
+        +content-cursor()
+    .
+      <?php
+        include($urlPath."inc/footer/com-lib-js.php");
+        include($urlPath."inc/footer/com-js.php");
+      ?>
+    //- script(type="text/javascript" src=urlPath+"assets/js/home.min.js")
+    //- script.

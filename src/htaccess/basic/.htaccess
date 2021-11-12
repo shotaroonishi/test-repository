@@ -1,0 +1,33 @@
+# dev,live basic
+Order Deny,Allow
+Deny from all
+
+Satisfy Any
+
+SetEnvIf HOST "^(localhost\:3007/|localdev-kansei\.com)$" allowedHost
+
+Allow from env=allowedHost
+
+Require valid-user
+AuthType Basic
+AuthName "pas de deux Member-only Area"
+AuthUserFile /home/kanikapila/kanidev.com/public_html/dev-kansei/basic-auth/.htpasswd
+
+#This Apache config file was created by Duplicator Installer on 2021-03-30 02:59:19.
+#The original can be found in archived file with the name .htaccess__[HASH]
+
+# BEGIN WordPress
+# "BEGIN WordPress" から "END WordPress" までのディレクティブ (行) は
+# 動的に生成され、WordPress フィルターによってのみ修正が可能です。
+# これらのマーカー間にあるディレクティブへのいかなる変更も上書きされてしまいます。
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+# END WordPress

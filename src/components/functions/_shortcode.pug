@@ -1,0 +1,12 @@
+//- short code 詳細ページ タイトル
+.
+  <?php
+    function feature_fun() {
+        return "<img src='".get_stylesheet_directory_uri()."/assets/images/home/home-about-title.svg' />";
+    }
+    add_shortcode('feature-title', 'feature_fun');
+    function metrics_analysis() {
+        return '<h3 class="page-single-group-title"><img src="'.get_stylesheet_directory_uri().'/assets/images/common/page-title-metrics-analysis.svg" alt="実施した指標と分析"/></h3>';
+    }
+    add_shortcode('metrics-analysis', 'metrics_analysis');
+  ?>

@@ -1,0 +1,48 @@
+include /_data/_var.pug
+.
+  <?php
+    /**
+    * The template for displaying all single posts
+    *
+    * @package #{themename}
+    */
+    get_header();
+  ?>
+<body <?php body_class(); ?>>
+.
+  <?php
+    get_template_part( 'template-parts/content/content-loading' );
+  ?>
+.page-wrap
+  .
+    <?php
+      get_template_part(#{get_template_header});
+    ?>
+  main(role="main")
+    .page-fixed-bg
+    .
+      <?php
+        if ( have_posts() ) {
+            while ( have_posts() ) {
+              the_post();
+              get_template_part( 'template-parts/content/single/content', 'single' );
+            }
+          } else {
+            get_template_part( 'template-parts/content/content-none' );
+          }
+      ?>
+    .
+      <?php
+        #{postNavigation}();
+      ?>
+  .
+    <?php
+      get_footer();
+    ?>
+.
+  <?php
+    wp_footer();
+  ?>
+</body>
+</html>
+

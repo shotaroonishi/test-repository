@@ -1,0 +1,14 @@
+//- form
+.
+  <?php
+    function my_mwform_value( $value, $name ) {
+    if ( $name === 'ct_occ' && !empty( $_GET['ct_occ'] ) && !is_array( $_GET['ct_occ'] ) ) {
+        return $_GET['ct_occ'];
+    }
+    if ( $name === 'ct_privacy' && !empty( $_GET['ct_privacy'] ) && !is_array( $_GET['ct_privacy'] ) ) {
+        return $_GET['ct_privacy'];
+    }
+    return $value;
+    }
+    add_filter( 'mwform_value_mw-wp-form-24', 'my_mwform_value', 10, 2 );
+  ?>

@@ -1,0 +1,14 @@
+@mixin scrolltrigger{
+  &-scrolltrigger{
+    &-container{
+      height: 1000px;
+    }
+    &-items{
+      display: flex;
+      margin-top: 300px;
+    }
+    &-fig{
+      max-width: 300px;
+    }
+  }
+}

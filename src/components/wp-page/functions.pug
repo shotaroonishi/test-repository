@@ -1,0 +1,108 @@
+include /_data/_var.pug
+.
+  <?php
+    /**
+    * functions and definitions
+    *
+    * @package #{themename}
+    */
+    require_once locate_template('functions-customs.php', true);
+
+    if ( ! function_exists( 'theme_setup' ) ) :
+      function theme_setup() {
+        //翻訳ファイルの読み込み
+        load_theme_textdomain( '#{langFileName}', get_template_directory() . '/languages' );
+
+        add_theme_support( 'automatic-feed-links' );
+
+        add_theme_support( 'title-tag' );
+
+        add_theme_support('post-thumbnails');
+
+        //html5のマークアップ使用
+        add_theme_support( 'html5', array(
+          'comment-form',
+          'comment-list',
+          'gallery',
+          'caption',
+        ));
+
+        //投稿フォーマットの指定
+        add_theme_support( 'post-formats', array(
+          'aside',
+          'image',
+          'video',
+          'quote',
+          'link',
+          'gallery',
+          'audio',
+        ));
+
+        //navi設定
+        register_nav_menus( array(
+          'top' => __( 'Top Menu', '#{langFileName}' ),
+          'social'  => __( 'Social Links Menu', '#{langFileName}' ),
+        ));
+      }
+    endif;
+    add_action( 'after_setup_theme', 'theme_setup' );
+
+    //widgets
+    function widgets_init() {
+      register_sidebar( array(
+        'name'          => __( 'Footer', '#{langFileName}' ),
+        'id'            => 'sidebar-1',
+        'description'   => __( 'Add widgets here to appear in your footer.', '#{langFileName}' ),
+        'before_widget' => '<section id="%1$s" class="widget %2$s">',
+        'after_widget'  => '</section>',
+        'before_title'  => '<h2 class="widget-title">',
+        'after_title'   => '</h2>',
+      ) );
+
+      //- register_sidebar( array(
+      //-   'name'          => __( 'Sidebar-2', '#{langFileName}' ),
+      //-   'id'            => 'sidebar-2',
+      //-   'description'   => __( 'Add widgets here to appear in your footer.', '#{langFileName}' ),
+      //-   'before_widget' => '<section id="%1$s" class="widget %2$s">',
+      //-   'after_widget'  => '</section>',
+      //-   'before_title'  => '<h2 class="widget-title">',
+      //-   'after_title'   => '</h2>',
+      //- ) );
+
+      //- register_sidebar( array(
+      //-   'name'          => __( 'Sidebar-3', '#{langFileName}' ),
+      //-   'id'            => 'sidebar-3',
+      //-   'description'   => __( 'Add widgets here to appear in your footer.', '#{langFileName}' ),
+      //-   'before_widget' => '<section id="%1$s" class="widget %2$s">',
+      //-   'after_widget'  => '</section>',
+      //-   'before_title'  => '<h2 class="widget-title">',
+      //-   'after_title'   => '</h2>',
+      //- ) );
+    }
+    add_action( 'widgets_init', 'widgets_init' );
+
+    if ( ! function_exists( '#{templateNavigation}' ) ) :
+      /**
+      * Documentation for function.
+      */
+      function #{templateNavigation}() {
+        the_posts_pagination(
+          array(
+            'mid_size'  => 1,
+            'prev_text' => '<i class="page-arrow-l"></i>',
+            'next_text' => '<i class="page-arrow-r"></i>',
+            'first_page' => false,
+            'type' => 'list'
+            //- "firstPageText" => "先頭",
+            //- "lastPageText" => "最後"
+          )
+        );
+      }
+    endif;
+
+    add_filter('navigation_markup_template', function($template, $class) {
+      if ($class == 'pagination') {
+          $template = '<nav class="page-pagination %1$s" role="pagination"><div class="page-pagination-links">%3$s</div></nav>';
+      }
+      return $template;
+    }, 10, 2);

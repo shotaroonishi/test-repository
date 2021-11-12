@@ -1,0 +1,51 @@
+include /_data/_var.pug
+.
+  <?php
+    /**
+    * Template part for displaying posts
+    *
+    * @package #{themename}
+    */
+    include locate_template('/template-parts/content/content-var.php');
+  ?>
+<article id="post-<?php the_ID(); ?>" <?php post_class(''); ?>>
+header
+  h1.page-single-title
+    img(src!="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/common/page-metrics-title.svg" alt="Metrics")
+  section.page-single-container.page-container-m
+    <?php if($catTerms) : ?>
+      div.page-single-cat
+        .
+          <?php
+            foreach ( $catTerms as $catTerm ):
+            $catId = $catTerm->term_id;
+            $catSlug = $catTerm->slug;
+            $catName = $catTerm->name;
+            $catLink = get_term_link($catTerm->slug,$category_taxonomy);
+            if($catSlug == 'psychology'){
+                echo '<img src="'.get_stylesheet_directory_uri().'/assets/images/common/icon-psychology.svg" alt="心理" />';
+              }
+            if($catSlug === 'environment'){
+              echo '<img src="'.get_stylesheet_directory_uri().'/assets/images/common/icon-environment.svg" alt="環境" />';
+            }
+            if($catSlug === 'tactile'){
+              echo '<img src="'.get_stylesheet_directory_uri().'/assets/images/common/icon-tactile.svg" alt="触覚" />';
+            }
+            if($catSlug === 'hearing'){
+              echo '<img src="'.get_stylesheet_directory_uri().'/assets/images/common/icon-hearing.svg" alt="聴覚" />';
+            }
+            if($catSlug === 'visual'){
+              echo '<img src="'.get_stylesheet_directory_uri().'/assets/images/common/icon-visual.svg" alt="視覚" />';
+            }
+            endforeach;
+          ?>
+    <?php endif; ?>
+    h2.page-single-subTitle.page-fts30 <?php the_title(); ?>
+    <?php if(has_post_thumbnail()): ?>
+    figure.page-single-thumbnail
+      <?php the_post_thumbnail(); ?>
+    <?php endif; ?>
+    .page-single-content
+      .page-container-s
+        <?php the_content(); ?>
+</article>

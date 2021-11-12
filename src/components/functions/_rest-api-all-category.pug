@@ -1,0 +1,86 @@
+//- print_r( $get_taxonomies );
+//- print_r( $taxonomy_term );
+//- $response = new WP_REST_Response($totalPosts);
+.
+  <?php
+    function add_rest_endpoint_all_category() {
+      register_rest_route(
+        'api/v2',
+        '/categories',
+        array(
+        'methods' => WP_REST_SERVER::READABLE,
+        'permission_callback' => '__return_true',
+        'callback' => 'get_all_category',
+        )
+      );
+    }
+    function get_all_category($request) {
+      $posts_page = $request->get_param( 'per_page' );
+      $paged = $request->get_param( 'page' );
+      $paged = ( isset( $paged ) || ! ( empty( $paged ) ) ) ? $paged : 1;
+      $offset = ( $paged-1 ) * $posts_page;
+      $allargs = array(
+        'public'   => true,
+        '_builtin' => false,
+        'hierarchical' => true
+      );
+      $output = 'names';
+      $operator = 'and';
+      $get_taxonomies = get_taxonomies( $allargs, $output, $operator );
+      $category_base = array('category');
+      $filt_taxonomies = array();
+      if ( $get_taxonomies ) {
+          foreach ( $get_taxonomies  as $get_taxonomy ) {
+              $filt_taxonomies[] = $get_taxonomy;
+          }
+      }
+      $all_taxonomies = array_merge($filt_taxonomies); // ,$category_base
+      $taxonomies = $all_taxonomies;
+      $args = array(
+        'order' => 'ASC',
+        'orderby' => 'name',
+        'hide_empty' => true,
+        'number' => $posts_page,
+        'offset' => $offset,
+      );
+      $taxonomy_terms = get_terms($taxonomies, $args);
+      foreach($taxonomy_terms as $taxonomy_term):
+        $id = $taxonomy_term->term_id;
+        $name = $taxonomy_term->name;
+        $slug = $taxonomy_term->slug;
+        $term_group = $taxonomy_term->term_group;
+        $term_taxonomy_id = $taxonomy_term->term_taxonomy_id;
+        $taxonomy = $taxonomy_term->taxonomy;
+        $parent = $taxonomy_term->parent;
+        $count = $taxonomy_term->count;
+        $link = get_term_link($taxonomy_term);
+        $postType = get_taxonomy($taxonomy)->object_type[0];
+        if($postType === 'post'){
+          $urlType = 'posts';
+          $urltax = 'categories';
+        }else{
+          $urlType = $postType;
+          $urltax = $taxonomy;
+        }
+
+        $category_data[] = [
+        'catid' => $id,
+        'name' => $name,
+        'slug' => $slug,
+        'term_group' => $term_group,
+        'term_taxonomy_id' => $term_taxonomy_id,
+        'taxonomy' => $taxonomy,
+        'parent' => $parent,
+        'count' => $count,
+        'link' => $link,
+        'postType' => $postType,
+        'urlType' => $urlType,
+        'urlTax' => $urltax,
+      ];
+      endforeach;
+      $response = new WP_REST_Response($category_data);
+      $response->set_status(200);
+      return $response;
+    }
+    add_action('rest_api_init', 'add_rest_endpoint_all_category');
+  ?>

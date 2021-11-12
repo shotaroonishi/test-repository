@@ -1,0 +1,50 @@
+// @use "common/variables/breakpoint";
+@use "common/variables" as var;
+.header{
+  &-wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &-gn{
+    &-menuicon{
+      display: none;
+    }
+  }
+  &-nav{
+    &-items{
+      display: flex;
+    }
+  }
+  @include var.max767_98{
+    width: 100%;
+    position: fixed;
+    &-gn{
+      &-item:nth-of-type(2){
+        width: 100%;
+        opacity: 0;
+        visibility: hidden;
+        position: absolute;
+        left: 0;
+      }
+      &-menuicon{
+        display: block;
+      }
+      &-ac{
+        overflow-y: hidden;
+        & .header{
+          height: 100vh;
+          overflow-y: scroll;
+        }
+        & .header-gn-item:nth-of-type(2){
+          opacity: 1;
+          visibility: visible;
+        }
+        & .header-nav-items{
+          display: block;
+        }
+          
+      }
+    }
+  }//max-width:767;
+}

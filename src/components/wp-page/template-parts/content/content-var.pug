@@ -1,0 +1,18 @@
+.
+  <?php
+    $time = get_the_time('Y.m.d');
+    $postType = get_post_type();
+    $postId = get_the_ID();
+    $taxonomy_names = get_object_taxonomies($postType);
+    if($postType === 'post'){
+      $category_taxonomy = $taxonomy_names[0];
+      $catTerms = get_the_terms( $postId, $category_taxonomy );
+      $tag_taxonomy = $taxonomy_names[1];
+      $tagTerms = get_the_terms( $postId, $tag_taxonomy );
+    }else{
+      $category_taxonomy = $taxonomy_names[0];
+      $catTerms = get_the_terms( $postId, $category_taxonomy );
+      $tag_taxonomy = $taxonomy_names[1];
+      $tagTerms = get_the_terms( $postId, $tag_taxonomy );
+    }
+  ?>

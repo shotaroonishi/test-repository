@@ -1,0 +1,12 @@
+@mixin cursor{
+  &-cursor{
+    width: 40px;
+    height: 40px;
+    border-radius: 80%;
+    background: #CB4B16;
+    backface-visibility: hidden;
+    position: absolute;
+    top: -20px;
+    left: -20px;
+  }
+}

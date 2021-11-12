@@ -1,0 +1,220 @@
+include /_data/_var.pug
+.
+  <?php
+    /**
+    * The template for displaying all single posts
+    *
+    * @package #{themename}
+    */
+    get_header();
+  ?>
+<body <?php body_class(); ?>>
+.
+  <?php
+    get_template_part( 'template-parts/content/content-loading' );
+  ?>
+.page-wrap
+  .
+    <?php
+      get_template_part(#{get_template_header});
+    ?>
+  main(role="main")
+    .page-fixed-bg
+    .
+      <?php
+        if ( have_posts() ) {
+            while ( have_posts() ) {
+              the_post();
+              get_template_part( 'template-parts/content/single/content', 'single-case' );
+            }
+          } else {
+            get_template_part( 'template-parts/content/content-none' );
+          }
+      ?>
+    section.page-single-case-block
+      .page-container-l
+        h3.page-single-case-block-title
+          img(src!="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/common/page-case-subtitle.svg" alt="Metrics")
+        ul.page-block-case-items.row.row-cols-3.page-cp-20
+          .
+            <?php
+              $caseArgs = array(
+              'post_type' => 'case',
+              'orderby' => 'rand',
+              'post_status' => 'publish',
+              'ignore_sticky_posts' => 1,
+              'post__not_in' => array($id),
+              'posts_per_page' => 3,
+              //- 'orderby' => array(
+              //-   'menu_order'=>'ASC',
+              //-   'date' =>'DESC',
+              //- ),
+              );
+              $case_query = new WP_Query($caseArgs);
+              if ( $case_query->have_posts() ) {
+                while($case_query->have_posts()) {
+                  $case_query->the_post();
+            ?>
+          li.page-block-case-item
+            .page-block-case-item-wrap
+              a(href!="<?php the_permalink(); ?>").page-block-case-link.page-block-hv
+                figure.page-block-case-fig
+                  <?php the_post_thumbnail(); ?>
+                .page-block-case-copywrap
+                  h3.page-block-case-title.page-gr-b <?php the_title(); ?>
+                    span
+                  .page-block-case-excerpt <?php the_excerpt(); ?>
+          .
+            <?php
+                }
+              }
+              wp_reset_postdata();
+            ?>
+    section.page-single-metrics
+      .page-container-l
+        h3.page-single-metrics-title
+          img(src!="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/common/page-metrics-title-b.svg" alt="Metrics")
+        p.page-single-metrics-subTitle 評価指標のご紹介
+        ul.home-metrics-items.row.row-cols-3.page-cp-20
+          .
+            <?php
+              $metricsArgs = array(
+                'post_type' => 'metrics',
+                'post_status' => 'publish',
+                'orderby' => 'rand',
+                //- 'ignore_sticky_posts' => 1,
+                'posts_per_page' => 3,
+              );
+              $metrics_query = new WP_Query($metricsArgs);
+              if ( $metrics_query->have_posts() ) {
+                while($metrics_query->have_posts()) {
+                  $metrics_query->the_post();
+            ?>
+          li.page-metrics-item
+            .page-metrics-item-wrap
+              a(href!="<?php the_permalink(); ?>").page-metrics-item-link.page-block-hv
+                figure.page-metrics-item-fig
+                  <?php the_post_thumbnail(); ?>
+                .page-metrics-item-copywrap
+                  h3.page-metrics-item-title.page-gr-b <?php the_title(); ?>
+                    span
+                  .page-metrics-item-excerpt <?php the_excerpt(); ?>
+                  .
+                    <?php
+                      $single_metrics_postId = get_the_ID();
+                      $postType = get_post_type();
+                      $taxonomy_names = get_object_taxonomies($postType);
+                      $single_metrics_cat_tax = $taxonomy_names[0];
+                      $single_metrics_tag_tax = $taxonomy_names[1];
+                      $single_metrics_catTerms = get_the_terms( $single_metrics_postId, $single_metrics_cat_tax );
+                      $single_metrics_tagTerms = get_the_terms( $single_metrics_postId, $single_metrics_tag_tax );
+                    ?>
+                  div(class!="<?=$single_metrics_tagTerms ? 'page-metrics-item-term' : 'page-metrics-item-term page-metrics-item-notags'?>")
+                    .
+                      <?php
+                        if($single_metrics_tagTerms){
+                      ?>
+                    ul.page-metrics-item-tags
+                      .
+                        <?php
+                          foreach ( $single_metrics_tagTerms as $single_metrics_tagTerm ) {
+                            $single_metrics_tagName = $single_metrics_tagTerm->name;
+                        ?>
+                      li.page-metrics-item-tag.page-fts12 <?php echo $single_metrics_tagName; ?>
+                      <?php } ?>
+                    .
+                      <?php
+                        }
+                      ?>
+                    .
+                      <?php
+                        if($single_metrics_catTerms) {
+                      ?>
+                    div.page-metrics-item-cats
+                      .
+                        <?php
+                          foreach ( $single_metrics_catTerms as $single_metrics_catTerm ){
+                            $single_metrics_catSlug = $single_metrics_catTerm->slug;
+                            if($single_metrics_catSlug == 'psychology'){
+                              echo '<img src="'.get_stylesheet_directory_uri().'/assets/images/common/icon-psychology.svg" alt="心理" />';
+                              }
+                            if($single_metrics_catSlug === 'environment'){
+                              echo '<img src="'.get_stylesheet_directory_uri().'/assets/images/common/icon-environment.svg" alt="環境" />';
+                            }
+                            if($single_metrics_catSlug === 'tactile'){
+                              echo '<img src="'.get_stylesheet_directory_uri().'/assets/images/common/icon-tactile.svg" alt="触覚" />';
+                            }
+                            if($single_metrics_catSlug === 'hearing'){
+                              echo '<img src="'.get_stylesheet_directory_uri().'/assets/images/common/icon-hearing.svg" alt="聴覚" />';
+                            }
+                            if($single_metrics_catSlug === 'visual'){
+                              echo '<img src="'.get_stylesheet_directory_uri().'/assets/images/common/icon-visual.svg" alt="視覚" />';
+                            }
+                        ?>
+                      <?php } ?>
+                    .
+                      <?php
+                        }
+                      ?>
+          .
+            <?php
+                }
+              }
+              wp_reset_postdata();
+            ?>
+    section.page-single-tool-block
+      .page-container-m
+        h3.page-single-tool-block-title.page-flex-c.page-mgb70
+          img(src!="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/common/page-tool-subtitle.svg" alt="tool")
+        ul.page-block-tool-items.row.row-cols-2.page-cp-30
+          .
+            <?php
+              $toolArgs = array(
+              'post_type' => 'tool',
+              //- 'post__in' => array(67,255,253),
+              'orderby' => 'rand',
+              'post_status' => 'publish',
+              'ignore_sticky_posts' => 1,
+              'post__not_in' => array($id),
+              'posts_per_page' => 10,
+              //- 'orderby' => array(
+              //-   'menu_order'=>'ASC',
+              //-   'date' =>'DESC',
+              //- ),
+              );
+              $tool_query = new WP_Query($toolArgs);
+              if ( $tool_query->have_posts() ) {
+                while($tool_query->have_posts()) {
+                  $tool_query->the_post();
+            ?>
+          li.page-block-tool-item
+            .page-block-tool-item-wrap
+              a(href!="<?php the_permalink(); ?>").page-block-tool-link.page-block-hv
+                h3.page-block-tool-title.page-gr-c.page-btn-c <?php the_title(); ?>
+                  span
+                  i.page-arrow-r.page-arrow-r-white
+          .
+            <?php
+                }
+              }
+              wp_reset_postdata();
+            ?>
+    .
+      <?php
+        get_template_part( 'template-parts/content/content', 'contact' );
+      ?>
+    //- .
+    //-   <?php
+    //-     #{postNavigation}();
+    //-   ?>
+  .
+    <?php
+      get_footer();
+    ?>
+.
+  <?php
+    wp_footer();
+  ?>
+</body>
+</html>
+

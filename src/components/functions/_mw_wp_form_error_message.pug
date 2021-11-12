@@ -1,0 +1,15 @@
+//- 【MW WP Form】エラーメッセージをカスタマイズ
+.
+  <?php
+    function my_exam_validation_rule( $Validation, $data, $Data ) {
+    $Validation->set_rule( 'con_name', 'noEmpty', array( 'message' => '※“お名前”を入力してください。' ) );
+    $Validation->set_rule( 'con_company', 'noEmpty', array( 'message' => '※“ご所属”を入力してください。' ) );
+    $Validation->set_rule( 'con_email', 'noEmpty', array( 'message' => '※“メールアドレス”を入力してください。' ) );
+    $Validation->set_rule( 'con_email_confirm', 'noEmpty', array( 'message' => '※“メールアドレス（確認）”を入力してください。' ) );
+    $Validation->set_rule( 'con_type', 'noEmpty', array( 'message' => '※“お問合せ種類”を選択してください。' ) );
+    $Validation->set_rule( 'con_content', 'noEmpty', array( 'message' => '※“お問合せ内容”を入力してください。' ) );
+    $Validation->set_rule( 'con_privacy_check', 'required', array( 'message' => '※“プライバシーポリシーをご確認ください。' ) );
+    return $Validation;
+    }
+    add_filter( 'mwform_validation_mw-wp-form-311', 'my_exam_validation_rule', 10, 3 );
+  ?>

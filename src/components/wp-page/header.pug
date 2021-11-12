@@ -1,0 +1,21 @@
+include /_data/_var.pug
+- let metaCharset = "<?php bloginfo( 'charset' ); ?>"
+.
+  <?php
+    /**
+    * The header for our theme
+    *
+    * @package #{themename}
+    */
+  ?>
+doctype html
+<html <?php language_attributes(); ?> class="no-js no-svg">
+head
+  meta(charset!=metaCharset)
+  meta(name="viewport" content="width=device-width, initial-scale=1")
+  //- link(rel="icon" href!="<?php echo get_template_directory_uri() ?>/assets/favicons/favicon.ico")
+  //- link(rel="icon" href!="<?php echo get_template_directory_uri() ?>/assets/favicons/favicon16x16.png")
+  //- link(rel="icon" href!="<?php echo get_template_directory_uri() ?>/assets/favicons/favicon32x32.png")
+  //- link(rel="icon" href!="<?php echo get_template_directory_uri() ?>/assets/favicons/favicon64x64.png")
+  //- link(rel="apple-touch-icon-precomposed" href!="<?php echo get_template_directory_uri() ?>/assets/favicons/favicon128x128.png")
+  :php wp_head();

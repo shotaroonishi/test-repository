@@ -1,0 +1,35 @@
+//- admin ダッシュボード 概要 news追加
+.
+  <?php
+  add_action( 'dashboard_glance_items', 'admin_custom_post_add_dashboard_widget' );
+  function admin_custom_post_add_dashboard_widget() {
+    $args = array(
+      'public' => true,
+      '_builtin' => false
+    );
+    $output = 'object';
+    $operator = 'and';
+    $post_types = get_post_types( $args, $output, $operator );
+    foreach ( $post_types as $post_type ) {
+      $num_posts = wp_count_posts( $post_type->name );
+      $num = number_format_i18n( $num_posts->publish );
+      $text = _n( $post_type->labels->singular_name, $post_type->labels->name, intval( $num_posts->publish ) );
+      if ( current_user_can( 'edit_posts' ) ) {
+        $output = '<a href="edit.php?post_type=' . $post_type->name . '">' . $num . '&nbsp;' . $text . '</a>';
+      }
+        echo '<li class="post-count ' . $post_type->name . '-count">' . $output . '</li>';
+    }
+  }
+  ?>
+
+//- admin 概要 コメント post 非表示
+//- echo '<style>#dashboard_right_now .post-count,#dashboard_right_now .comment-count{display:none;}#dashboard_right_now .news-count{display:block;}</style>'.PHP_EOL;
+.
+  <?php
+    function post_right_option_remove() {
+      if (!current_user_can('administrator')) {
+        echo '<style>#dashboard_right_now .post-count,#dashboard_right_now .comment-count{display:none;}#dashboard_right_now .news-count{display:block;}</style>'.PHP_EOL;
+      };
+    }
+    add_action('admin_print_styles', 'post_right_option_remove');
+  ?>

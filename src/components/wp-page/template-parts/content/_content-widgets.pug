@@ -1,0 +1,57 @@
+include /_data/_var.pug
+.
+  <?php
+    /**
+    * Displays widgets if assigned
+    *
+    * @package #{themename}
+    */
+  ?>
+.
+  <?php
+    if ( is_active_sidebar( 'sidebar-1' ) || is_active_sidebar( 'sidebar-2' ) || is_active_sidebar( 'sidebar-3' ) ) :
+  ?>
+aside.widget-area(role="complementary")
+  .
+    <?php
+      if ( is_active_sidebar( 'sidebar-1' ) ) :
+    ?>
+  .widget-column.footer-widget-1
+    .
+      <?php
+        dynamic_sidebar( 'sidebar-1' );
+      ?>
+  .
+    <?php
+        endif;
+      ?>
+  .
+    <?php
+      if ( is_active_sidebar( 'sidebar-2' ) ) :
+    ?>
+  .widget-column.footer-widget-2
+    .
+      <?php
+        dynamic_sidebar( 'sidebar-2' );
+      ?>
+  .
+    <?php
+        endif;
+      ?>
+  .
+    <?php
+      if ( is_active_sidebar( 'sidebar-3' ) ) :
+    ?>
+  .widget-column.footer-widget-3
+    .
+      <?php
+        dynamic_sidebar( 'sidebar-3' );
+      ?>
+  .
+    <?php
+        endif;
+      ?>
+.
+ <?php
+    endif;
+  ?>

@@ -1,0 +1,230 @@
+include /_data/_var.pug
+.
+  <?php
+    /**
+    * The main template file
+    *
+    * @package #{themename}
+    */
+    get_header();
+  ?>
+<body <?php body_class('home'); ?>>
+.
+  <?php
+    get_template_part( 'template-parts/content/content-loading' );
+  ?>
+.page-wrap
+  .
+    <?php
+      get_template_part(#{get_template_header});
+    ?>
+  main(role="main")
+    .page-fixed-bg
+    section.home-vs
+      .home-vs-wrap
+        .page-container-l
+          .home-vs-items
+            .home-vs-item
+              img(src!="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/home/home-vs.png" alt="感性のものさし")
+            .home-vs-item
+              h1.home-vs-title
+                span
+                  include /assets/images/home/home-vs-title.svg
+              p.home-vs-copy 豊かで持続可能な社会の実現 (SDGs)には、社会の価値観を感性を基準としたものへ転換することが必要です。我々は、高級感や特別感を感じたり、ワクワクしたりする気持ちの本質を”感性価値”と定義し、その価値に沿った製品やサービスを創ることができる仕組みと、その価値を蓄積、共有することができる仕組みのために、感性のものさしを作りました。この感性のものさしを「感性価値メトリック」と呼びます。
+    section.home-search.mg-b60
+      .home-metrics-container
+        .page-container-l
+          #app
+            div.home-search-bar
+              .home-search-wrap
+                .home-search-text(:class="{ active: searchCloseAT }")
+                  .home-search-text-filter-wrap
+                    p.home-search-text-filter.home-search-event(@click="searchclose") Filter
+                      i
+                        img(src!="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/common/icon-triangle.svg" alt="triangle")
+                  p.home-search-text-inputWrap
+                    input(type="text" class="home-search-text-input" placeholder="キーワードを入力してください。" v-model="wordSearch")
+                .home-search-filter-container
+                  .home-search-filter-wrap
+                    .home-search-filter-items
+                      .home-search-filter-item
+                        p.home-search-filter-btn-title Category
+                        ul.home-search-filter-cats
+                          li(v-for="cat in cats", :key="cat.catid").home-search-filter-cat
+                            input(:id="cat.catid" class="home-search-filter-cat-input home-search-filter-btn-input" type="radio" :value="cat.catid" v-model="catSearch")
+                            label(:for="cat.catid" class="home-search-filter-cat-label home-search-filter-btn-label") {{cat.name}}について
+                      .home-search-filter-item
+                        p.home-search-filter-btn-title Tag
+                        ul.home-search-filter-tag-items
+                          li(v-for="tag in tags", :key="tag.tagid").home-search-filter-tag-item
+                            input(:id="tag.tagid" class="home-search-filter-cat-input home-search-filter-btn-input" type="checkbox" :value="tag.tagid" v-model="tagSearch")
+                            label(:for="tag.tagid" class="home-search-filter-cat-label home-search-filter-btn-label") {{tag.name}}
+                    .home-search-filter-foo-btns.page-mgt30
+                      p(@mouseover="searchMouseOverAction" @click="searchclose").home-search-close.page-gr-a.page-btn-c.home-search-close-at 閉じる
+                        span
+                      p(@mouseover="searchMouseOverAction" @click="searchClear").home-search-clear.page-gr-a.page-btn-c Clear Filter
+                        span
+            ul(v-if="posts" :class="{ active: searchCloseAT }").home-metrics-items.row.row-cols-3.page-cp-20
+              li(v-for="post in posts", :key="post.id").page-metrics-item
+                .page-metrics-item-wrap(@mouseover="metricsMouseOverAction")
+                  a(:href="post.link").page-metrics-item-link
+                    figure(v-if="post.thumbnail").page-metrics-item-fig
+                      img(:src="post.thumbnail" :alt="post.title")
+                    .page-metrics-item-copywrap
+                      h3(v-if="post.title" ref="metricsTitle").page-metrics-item-title.page-gr-b {{post.title}}
+                        span
+                      p(v-if="post.excerpt" v-html="post.excerpt").page-metrics-item-excerpt
+                      .page-metrics-item-term(:class="post.tags.length ? '': 'page-metrics-item-notags'" v-if="post.cats")
+                        ul(v-if="post.tags.length").page-metrics-item-tags
+                          li(v-html="tag.name" v-for="tag in post.tags", :key="tag.id").page-metrics-item-tag.page-fts12
+                        div(v-if="post.cats" v-for="cat in post.cats", :key="cat.id").page-metrics-item-cats
+                          figure(v-if="cat.slug === 'psychology'").page-metrics-item-cat
+                            img(src!="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/common/icon-psychology.svg" alt="心理")
+                          figure(v-if="cat.slug === 'environment'").page-metrics-item-cat
+                            img(src!="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/common/icon-environment.svg" alt="環境")
+                          figure(v-if="cat.slug === 'tactile'").page-metrics-item-cat
+                            img(src!="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/common/icon-tactile.svg" alt="触覚")
+                          figure(v-if="cat.slug === 'hearing'").page-metrics-item-cat
+                            img(src!="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/common/icon-hearing.svg" alt="聴覚")
+                          figure(v-if="cat.slug === 'visual'").page-metrics-item-cat
+                            img(src!="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/common/icon-visual.svg" alt="視覚")
+                    
+            div(v-if="maxPost === 0").home-search-notContent 検索と一致するものがありません。
+            p(v-if="pageNum !== maxPost" @mouseover="searchMouseOverAction" @click="postUpdateBtn").page-btn-c.page-metrics-item-more もっと見る
+              span
+    section.home-slide
+      .home-slide-container
+        .home-slide-wrap
+          h2.home-slide-title.page-flex-c
+            include /assets/images/home/home-news-title.svg
+          .splide#splide
+            .splide__arrows
+              button.splide__arrow.splide__arrow--prev
+                img(src!="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/home/home-case-arrow-prev.svg" alt="Prev")
+              button.splide__arrow.splide__arrow--next
+                img(src!="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/home/home-case-arrow-next.svg" alt="Next")
+            .splide__track
+              ul.home-slide-items.splide__list
+                .
+                  <?php
+                    $caseArgs = array(
+                    'post_type' => 'case',
+                    'orderby' => 'rand',
+                    'post_status' => 'publish',
+                    'ignore_sticky_posts' => 1,
+                    'post__not_in' => array($id),
+                    'posts_per_page' => 3,
+                    //- 'orderby' => array(
+                    //-   'menu_order'=>'ASC',
+                    //-   'date' =>'DESC',
+                    //- ),
+                    );
+                    $case_query = new WP_Query($caseArgs);
+                    if ( $case_query->have_posts() ) {
+                      while($case_query->have_posts()) {
+                        $case_query->the_post();
+                        $case_task = get_field('case_task');
+                        $case_company_name = get_field('case_company_name');
+                        $case_comment_thum = get_field('case_comment_thum');
+                        $case_comment_manager = get_field('case_comment_manager');
+                        $case_comment_company = get_field('case_comment_company');
+                        $case_comment_company_url = get_field('case_comment_company_url');
+                        $case_comment_explanation = get_field('case_comment_explanation');
+                  ?>
+                li.home-slide-item.splide__slide
+                  .home-slide-item-wrap.splide-wrap
+                    a(href!="<?php the_permalink(); ?>").home-slide-item-link.page-block-hv
+                      div.home-slide-item-header
+                        div.home-slide-item-header-left
+                          figure
+                            img(src!="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/home/home-case-ilust.svg" alt="視覚")
+                        div.home-slide-item-header-right
+                          p.home-slide-item-header-task <?php echo $case_task; ?>
+                          p.home-slide-item-header-company <?php echo $case_company_name; ?>
+                      figure.home-slide-item-thum
+                        <?php the_post_thumbnail(); ?>
+                      div.home-slide-item-copy-wrap
+                        h3.home-slide-item-copy-title.page-gr-b <?php the_title(); ?>
+                          span
+                        div.home-slide-item-copy-text <?php the_excerpt(); ?>
+                .
+                  <?php
+                      }
+                    }
+                    wp_reset_postdata();
+                  ?>
+    section.home-about
+      .home-about-wrap
+        .page-container-l
+          .home-about-items
+            .home-about-item
+              h2.home-about-title
+                include /assets/images/home/home-about-title.svg
+              p.home-about-copy 感性工学 (Kansei/Affective Engineering) は、人間の感性という主観的で論理的に説明しにくい反応を、科学的手法によって価値を発見し、活用することによって社会に資することを目的とした学問です。1980年代に日本で始まり世界へ伝わった比較的新しい技術分野でもあります。長町三生広島大学名誉教授がマツダとともに自動車開発でコンセプトブレイクダウンに応用した事例がよく知られており、他にも建築、家電、服飾分野など広範囲にわたってデザイン支援や感性評価の成功例が示されました。<br>2007年からは経産省が主導する「感性価値創造イニシアティブ」が推進され、日本のものづくりが追求してきた高性能、高信頼性、低価格という３つの価値が競争力を失ったことを改めて振り返り、生活者にとっての「いい商品、いいサービス」を検討した結果、生活者の感性に働きかけ、感動や共感を呼び起こすものであると再定義し、この第４の価値（付加価値）を「感性価値」と表現しました。<br>では、この感性価値をどう測るか？
+              .page-btn-wrap.page-flex-c
+                a(href="/").page-gr-a.page-btn-a もっと知る
+                  span
+            .home-about-item
+              figure
+                img(src!="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/home/home-about-img.svg" alt="感性価値メトリックとは")
+    section.home-news
+      .home-news-wrap
+        .page-container-s
+          h2.home-news-title
+            include /assets/images/home/home-news-title.svg
+          ul.page-news-items
+            .
+              <?php
+                $newsArgs = array(
+                  'post_type' => 'news',
+                  'post_status' => 'publish',
+                  'posts_per_page' => 3,
+                  'orderby' => array(
+                    'menu_order'=>'ASC',
+                    'date' =>'DESC',
+                  ),
+                );
+                $news_query = new WP_Query($newsArgs);
+                if ( $news_query->have_posts() ) {
+                  while($news_query->have_posts()) {
+                    $news_query->the_post();
+                    $news_link = get_field('news_link');
+              ?>
+            li.page-news-item
+              <?= $news_link ? '<a href="'.$news_link.'" class="page-news-link" rel="nofollow" target="_blank">' : '<div class="page-news-link">'; ?>
+                dl.page-news-group
+                  div.page-news-group-wrap
+                    dt.page-news-group-date <?php the_time('Y.m.d');?>
+                    dd.page-news-group-title <?php the_title();?>
+                <?= $news_link ? '<i class="page-arrow-r"></i>' : ''; ?>
+              <?= $news_link ? '</a>' : '</div>'; ?>
+            .
+              <?php
+                  }
+                }
+                wp_reset_postdata();
+              ?>
+          .page-btn-wrap.page-flex-c
+            a(href="/news").page-gr-a.page-btn-a 更新履歴
+              span
+    .
+      <?php
+        get_template_part( 'template-parts/content/content', 'contact' );
+      ?>
+    section.home-banner
+      .home-banner-wrap
+        .page-container-l
+          .home-banner-container
+            figure.home-banner-fig
+              img(src!="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/home/home-banner-institute.jpg" alt="感性価値創造")
+  .
+    <?php
+      get_footer();
+    ?>
+.
+  <?php
+    wp_footer();
+  ?>
+//- script.
+</body>
+</html>

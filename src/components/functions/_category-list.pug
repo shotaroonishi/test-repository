@@ -1,0 +1,16 @@
+//- Category list #{templateCatlist}();
+.
+  <?php
+    if ( ! function_exists( '#{templateCatlist}' ) ) :
+      function #{templateCatlist}() {
+        $categories = get_the_category();
+        if ( $categories ) :
+          echo '<ul class="cat-content">';
+          foreach ( $categories as $category ) {
+            echo '<li class="'.$category->slug.'"><a href="'.esc_url(get_category_link($category->term_id)).'">'.$category->name.'</a></li>';
+          }
+          echo '</ul>';
+        endif;
+      }
+    endif;
+  ?>
